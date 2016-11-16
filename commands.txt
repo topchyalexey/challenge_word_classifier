@@ -1,0 +1,4 @@
+/tests $ node generate.js -t seedstreeng 100
+/tests $ node test.js ../solution target
+50.15%
+

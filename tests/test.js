@@ -15,11 +15,11 @@ function main(target, testcases){
         console.log('from the testcase generator.');
         return 1;
     }
-    if (process.version!='v6.0.0')
-    {
-        console.error('This script must be run in Node.js v6.0.0');
-        return 1;
-    }
+    //if (process.version!='v6.0.0')
+    //{
+    //    console.error('This script must be run in Node.js v6.0.0');
+    //    return 1;
+    //}
     let classifier = loader.load(target);
     let global_score = 0, total = 0;
     for (let file of fs.readdirSync(testcases).sort())
