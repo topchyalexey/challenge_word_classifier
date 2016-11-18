@@ -7,6 +7,8 @@ const fs = require('fs');
 const words = fs.readFileSync('../../words.txt', 'utf8').split('\n').map((e) => e.toLowerCase())
 const literals = [..."abcdefghijklmnopqruvwxyz'"]
 
+const maxLetters = 5
+
 const getCombinations = (arr, n) => {
     var i,j,k,elem,l = arr.length,childperm,ret=[];
     if(n == 1){
@@ -34,16 +36,14 @@ const getCombinations = (arr, n) => {
 
 //let twoLetter = getCombinations(literals.slice(),2).map( (e) => e.join(''))
 //let threeLetter = getCombinations(literals.slice(),3).map( (e) => e.join(''))
-let fourLetter = getCombinations(literals.slice(),4).map( (e) => e.join(''))
+let permutationsDict = getCombinations(literals.slice(),maxLetters).map( (e) => e.join(''))
 
 console.log( 'words stat: ', words.reduce( (acc, e) => { acc.set(e.length, (acc.get(e.length) || 0) + 1 ); return acc } , new Map() ))
-console.log( 'size: 4 letters => ', fourLetter.length, ', words => ', words.length)
+console.log( 'size: ', maxLetters, ' letters => ', permutationsDict.length, ', words => ', words.length)
 
-const notContains = (word,e) => {
-    return word.indexOf(e) != 0
-}
+const notContains = (word,e) => word.indexOf(e) == -1
 
-const removeExistingCombinations = ( combArr, words) => {
+const removePerms = ( combArr, words) => {
     words.map((w,i) => {
         combArr = combArr.filter( (e) => notContains(w,e) )
         if ( i%10000 == 0 ) {
@@ -53,9 +53,7 @@ const removeExistingCombinations = ( combArr, words) => {
     return combArr
 }
 
-fourLetter = removeExistingCombinations(fourLetter, words.filter( (e) => e.length > 3))
-//removeExistingCombinations(twoLetter, words)
-//removeExistingCombinations(threeLetter, words)
+permutationsDict = removePerms(permutationsDict, words.filter( (e) => e.length >= maxLetters))
 
 const pack = (bytes) => {
     var chars = [];
@@ -81,6 +79,6 @@ const storeDict = (arr,fileName) => {
     file.end()
 }
 
-storeDict(fourLetter, 'four.txt')
+storeDict(permutationsDict, 'data')
 
-console.log( 'size: 4 letters => ', fourLetter.length)
+console.log( 'size: ', maxLetters, 'letters => ', permutationsDict.length)
